@@ -21,19 +21,37 @@ namespace SocialNetwork.BLL.Services
             friendRepository = new FriendRepository();
         }
 
-        public int FindByEmail(string friendEmail)
+        public UserEntity FindByEmail(string friendEmail)
         {
             var findUserEntity = userRepository.FindByEmail(friendEmail);
 
             if (findUserEntity is null) throw new UserNotFoundException();
 
-            return findUserEntity.id;
+            return findUserEntity;
         }
-        public void Create(string friendEmail, User user)
+        public Friend Create(string friendEmail, User user)
         {
-            var user_id = FindByEmail(friendEmail);
-            if (user_id == user.Id) throw new WrongFriendException();
-            
+            var friendEntity = FindByEmail(friendEmail);
+            if (friendEntity.id == user.Id) throw new WrongFriendException();
+
+            var createFriendEntity = new FriendEntity()
+            {
+                user_id = user.Id,
+                friend_id = friendEntity.id
+            };
+
+            if (this.friendRepository.Create(createFriendEntity) == 0)
+                throw new Exception();
+
+            return new Friend()
+            {
+                user_id = user.Id,
+                friend_id = friendEntity.id,
+                Email = friendEmail,
+                FirstName = friendEntity.firstname,
+                LastName = friendEntity.lastname
+            };
+
         }
 
     }

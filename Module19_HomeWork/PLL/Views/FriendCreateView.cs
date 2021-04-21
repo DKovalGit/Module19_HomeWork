@@ -19,14 +19,15 @@ namespace SocialNetwork.PLL.Views
         }
         public void Show(User user)
         {
-            var friend = new Friend();
+            string friendEmail;
             
-            Console.Write("Для добавления друга введите его E-Mail:");
-            friend.Email = Console.ReadLine();
+            Console.Write("Для добавления друга введите его E-Mail: ");
+            friendEmail = Console.ReadLine();
 
             try
             {
-                friendService.Create(friend.Email, user);
+                var newFriend = friendService.Create(friendEmail, user);
+                SuccessMessage.Show($"Новый друг {newFriend.FirstName} {newFriend.LastName} успешно добавлен:");
             }
             catch (UserNotFoundException)
             {
