@@ -6,21 +6,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-
 namespace SocialNetwork.PLL.Views
 {
     public class FriendCreateView
     {
-        
+
         FriendService friendService;
         public FriendCreateView(FriendService friendService)
-        {        
+        {
             this.friendService = friendService;
         }
         public void Show(User user)
         {
             string friendEmail;
-            
+
             Console.Write("Для добавления друга введите его E-Mail: ");
             friendEmail = Console.ReadLine();
 
